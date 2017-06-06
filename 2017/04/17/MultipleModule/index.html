@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>M-Liu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="M-Liu">
+    
+
+    
+    <meta name="description" content="采用多Module和Router的方式，都让项目无论是从解耦程度，可扩展性，可维护性等多方面得到了极大的提升">
+<meta name="keywords" content="框架,提升开发效率,Router">
+<meta property="og:type" content="article">
+<meta property="og:title" content="带你打造一个多Module路由框架">
+<meta property="og:url" content="http://yoursite.com/2017/04/17/MultipleModule/index.html">
+<meta property="og:site_name" content="Refuse To Accept Mediocrity">
+<meta property="og:description" content="采用多Module和Router的方式，都让项目无论是从解耦程度，可扩展性，可维护性等多方面得到了极大的提升">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1906608-8ff7cc21c396c380.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1906608-86bb680556fc1473.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1906608-4d089303252615c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1906608-9136743793628410.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1906608-68c040a9e9233950.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-05T10:10:58.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="带你打造一个多Module路由框架">
+<meta name="twitter:description" content="采用多Module和Router的方式，都让项目无论是从解耦程度，可扩展性，可维护性等多方面得到了极大的提升">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1906608-8ff7cc21c396c380.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Refuse To Accept Mediocrity" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/logo.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/author2.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/author2.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Refuse To Accept Mediocrity" title="Refuse To Accept Mediocrity"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Refuse To Accept Mediocrity">Refuse To Accept Mediocrity</a></h1>
+				<h2 class="blog-motto">与孤独为伴，让自己来一场涅槃</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/">关于我</a></li>
+					
+					<li>
+ 					
+						<form class="search">
+							<label>Search</label>
+						<input type="text" id="ts-search-input" name="q" size="30" placeholder="搜索"><br>
+						</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/17/MultipleModule/" title="带你打造一个多Module路由框架" itemprop="url">带你打造一个多Module路由框架</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="M-Liu" target="_blank" itemprop="author">M-Liu</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-16T16:15:23.000Z" itemprop="datePublished"> 发表于 2017-04-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo"><span class="toc-text">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#一、项目为什么要分成多Module"><span class="toc-text">一、项目为什么要分成多Module</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、解决Module之间页面跳转问题"><span class="toc-text">二、解决Module之间页面跳转问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1、问题分析"><span class="toc-text">1、问题分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2、问题解决"><span class="toc-text">2、问题解决</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3、具体代码编写"><span class="toc-text">3、具体代码编写</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#（一）定义操作接口"><span class="toc-text">（一）定义操作接口</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（二）基础实现类"><span class="toc-text">（二）基础实现类</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（三）具体Activity这种处理"><span class="toc-text">（三）具体Activity这种处理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（四）Manager管理者编写"><span class="toc-text">（四）Manager管理者编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（五）代言者——Remote编写"><span class="toc-text">（五）代言者——Remote编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（六）测试"><span class="toc-text">（六）测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（三）拔高与提升"><span class="toc-text">（三）拔高与提升</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#１、创建RemoteAnnotation-Module"><span class="toc-text">１、创建RemoteAnnotation Module</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2、创建RemoteCompiler-Module"><span class="toc-text">2、创建RemoteCompiler Module</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3、具体调用"><span class="toc-text">3、具体调用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#四、总结"><span class="toc-text">四、总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实际代码请下载或者Frok项目。"><span class="toc-text">实际代码请下载或者Frok项目。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo-1"><span class="toc-text">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。"><span class="toc-text">欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#个人邮箱：ms-liu163-163-com"><span class="toc-text">个人邮箱：ms_liu163@163.com</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>我过我要的生活<br>不是生活过我就好<br>只要是我想要的<br>期待多久都有情调　　　　　　　　　　　　　　</p>
+</blockquote>
+<p>开篇推荐一首歌曲，送给一直默默奋斗、坚持，但有时又感到迷茫的你。猛戳<a href="http://music.163.com/#/song?id=25713115" target="_blank" rel="external">《过我的生活》</a></p>
+<hr>
+<h4 id="项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo"><a href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo" class="headerlink" title="项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo"></a><a href="https://github.com/ms-liu/AndroidRemoteDemo" target="_blank" rel="external">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</a></h4><h4 id="一、项目为什么要分成多Module"><a href="#一、项目为什么要分成多Module" class="headerlink" title="一、项目为什么要分成多Module"></a>一、项目为什么要分成多Module</h4><p>　　先感受下传统的两种划分模式：业务功能分包、不同组件分包。<br><img src="http://upload-images.jianshu.io/upload_images/1906608-8ff7cc21c396c380.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="业务功能划分"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1906608-86bb680556fc1473.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="不同组件划分"><br> 　　这两种分包都是放在一个App这一个Module里面的。<br>　　每次编译往往都是需要将项目的所有业务都编译一遍，过程繁重。对于单元测试也只是想想就好，因为和普通测试根本没差。另外经常在开发人员之间发生的事情，就是为谁修改了谁的代码而发生互怼事件 <em>[斜眼笑]</em>。<br>　　总体体现：</p>
+<blockquote>
+<ul>
+<li>编译困难</li>
+<li>单元测试困难</li>
+<li>开发、维护困难</li>
+</ul>
+</blockquote>
+<p>　　因此将项目分成多个Module是很有必要的，这样可以：</p>
+<blockquote>
+<ul>
+<li>提高灵活性——每次只需要编译我们自己想要的Module即可，同时提升编译速度。</li>
+<li>方便单元测试——可以轻松的针对每个Module作出单元测试。</li>
+<li>让职责分工明确——可以更好的让开发人员去维护各自的模块 </li>
+</ul>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1906608-4d089303252615c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="多Module划分"></p>
+<h4 id="二、解决Module之间页面跳转问题"><a href="#二、解决Module之间页面跳转问题" class="headerlink" title="二、解决Module之间页面跳转问题"></a>二、解决Module之间页面跳转问题</h4><h5 id="1、问题分析"><a href="#1、问题分析" class="headerlink" title="1、问题分析"></a>1、问题分析</h5><p>　　项目被分成多Ｍodule之后，由于项目业务往往是交叉的，所以Module当中包含的页面跳转往往也是相互的。<br>　　为了能够让页面Module之间的页面能够相互跳转，我们往往需要将每个Module之间相互compile，这样无异于又增加了模块之间耦合性，并且还有可能会报出一个循环编译的警告<em>（warning recycle compile）</em></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1906608-9136743793628410.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="一般多模块之间关系"></p>
+<h5 id="2、问题解决"><a href="#2、问题解决" class="headerlink" title="2、问题解决"></a>2、问题解决</h5><p>　　通过参考Web页面的跳转方式，不难想到的是我们完全可以仿照Web跳转，也先去为每一个Activity注册一个地址，然后，然后…..<em>（PS：然后就没有思路了，MDZZ）</em>。这时看图一张：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1906608-68c040a9e9233950.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="多Module路由关系"></p>
+<p>　　首先去关心每一个需要被其它Module调用的页面，我们将它配置到Common Module中的Remote Configure文件。<br>　　下面我们就是在Remote模块当中编写一些具体Router Operator类。下面我们就需要思考对一个路由地址究竟需要进行怎样的处理了。</p>
+<blockquote>
+<ul>
+<li>我们需要拿到这个地址（注册）——通过put/add方法</li>
+<li>我们需要让路由地址生效（调用）——通过invoke方法</li>
+</ul>
+</blockquote>
+<h5 id="3、具体代码编写"><a href="#3、具体代码编写" class="headerlink" title="3、具体代码编写"></a>3、具体代码编写</h5><h6 id="（一）定义操作接口"><a href="#（一）定义操作接口" class="headerlink" title="（一）定义操作接口"></a>（一）定义操作接口</h6><p>核心方法就是put和invoke</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * ==============================================</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 类名：IOperator</div><div class="line"> * &amp;nbsp 基本操作接口</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 作者：M-Liu</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 时间：2017/3/27</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 邮箱：ms_liu163@163.com</div><div class="line"> * &lt;p&gt;</div><div class="line"> * ==============================================</div><div class="line"> */</div><div class="line"></div><div class="line">public interface IOperator&lt;T,K&gt; &#123;</div><div class="line">    /**</div><div class="line">     * 添加路由地址</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @param clazz 路由类型</div><div class="line">     */</div><div class="line">    void put(String uri,Class&lt;T&gt; clazz);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 执行路由路线</div><div class="line">     * @param context Context</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @return &#123;@link BaseIntentOperator#invoke(Context, String)&#125;</div><div class="line">     */</div><div class="line">    K invoke(Context context,String uri);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 检查当前路由路线 是否存在</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    boolean check(String uri);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="（二）基础实现类"><a href="#（二）基础实现类" class="headerlink" title="（二）基础实现类"></a>（二）基础实现类</h6><p>因为是Demo讲解，所以只是针对Intent这一种<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * ==============================================</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 类名：BaseIntentOperator</div><div class="line"> * &amp;nbsp 返回类型是Intent的基础操作类</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 作者：M-Liu</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 时间：2017/3/27</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 邮箱：ms_liu163@163.com</div><div class="line"> * &lt;p&gt;</div><div class="line"> * ==============================================</div><div class="line"> */</div><div class="line"></div><div class="line">public abstract class BaseIntentOperator&lt;T&gt; implements IOperator&lt;T,Intent&gt; &#123;</div><div class="line">    private HashMap&lt;String,Class&lt;T&gt;&gt; mIntentContainer;</div><div class="line">    public BaseIntentOperator()&#123;</div><div class="line">        mIntentContainer = new LinkedHashMap&lt;&gt;();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * &#123;@inheritDoc&#125;</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void put(String uri, Class&lt;T&gt; clazz) &#123;</div><div class="line">        if (mIntentContainer != null)&#123;</div><div class="line">            mIntentContainer.put(uri,clazz);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * &#123;@inheritDoc&#125;</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public Intent invoke(Context context, String uri) &#123;</div><div class="line">        Class&lt;T&gt; clazz = null;</div><div class="line">        if (check(uri))&#123;</div><div class="line">            clazz = mIntentContainer.get(uri);</div><div class="line">        &#125;</div><div class="line">        if (clazz == null)&#123;</div><div class="line">            throwException(uri);</div><div class="line">        &#125;</div><div class="line">        return new Intent(context,clazz);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public abstract void throwException(String uri);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * &#123;@inheritDoc&#125;</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public boolean check(String uri) &#123;</div><div class="line">        return mIntentContainer != null &amp;&amp; mIntentContainer.keySet().contains(uri);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h6 id="（三）具体Activity这种处理"><a href="#（三）具体Activity这种处理" class="headerlink" title="（三）具体Activity这种处理"></a>（三）具体Activity这种处理</h6><p>　　当中定义了PROTOCOL 常量，相当于Http这种协议，在Demo中是预留，因为没有处理Service等其它组件的情况，所以没有用到。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * ==============================================</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 类名：ActivityIntentOperator</div><div class="line"> * &amp;nbsp 针对Activity路由操作</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 作者：M-Liu</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 时间：2017/3/28</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 邮箱：ms_liu163@163.com</div><div class="line"> * &lt;p&gt;</div><div class="line"> * ==============================================</div><div class="line"> */</div><div class="line">public class ActivityIntentOperator extends BaseIntentOperator&lt;AppCompatActivity&gt;</div><div class="line"> &#123;</div><div class="line">    public static final String PROTOCOL = &quot;activity://&quot;;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void throwException(String uri) &#123;</div><div class="line">        throw new NotFoundRuleException(ActivityIntentOperator.class.getCanonicalName(),uri);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="（四）Manager管理者编写"><a href="#（四）Manager管理者编写" class="headerlink" title="（四）Manager管理者编写"></a>（四）Manager管理者编写</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line">public class RemoteOperatorManager &#123;</div><div class="line"></div><div class="line">    private static RemoteOperatorManager mRemoteManager;</div><div class="line">    //路由操作管理池</div><div class="line">    private HashMap&lt;String,IOperator&gt; mOperatorPool;</div><div class="line">    private RemoteOperatorManager()&#123;</div><div class="line">        mOperatorPool = new LinkedHashMap&lt;&gt;();</div><div class="line">        putDefaultOperator();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //初始化默认路由操作</div><div class="line">    private void putDefaultOperator() &#123;</div><div class="line">        if (mOperatorPool != null)&#123;</div><div class="line">            mOperatorPool.put(ActivityIntentOperator.PROTOCOL,new ActivityIntentOperator());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取RemoteOperatorManager</div><div class="line">     * @return RemoteOperatorManager</div><div class="line">     */</div><div class="line">    public static RemoteOperatorManager get()&#123;</div><div class="line">        if (mRemoteManager == null)&#123;</div><div class="line">            synchronized (RemoteOperatorManager.class)&#123;</div><div class="line">                mRemoteManager = new RemoteOperatorManager();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return mRemoteManager;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 添加自定义 路由操作</div><div class="line">     * @param protocol 路由协议 &#123;@link ActivityIntentOperator#PROTOCOL&#125;</div><div class="line">     * @param operator 具体操作类</div><div class="line">     */</div><div class="line">    public RemoteOperatorManager putCustomOperator(String protocol,IOperator operator)&#123;</div><div class="line">        if (mOperatorPool != null)&#123;</div><div class="line">            mOperatorPool.put(protocol,operator);</div><div class="line">        &#125;</div><div class="line">        return mRemoteManager;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * 检查当前路由操作 是否存在</div><div class="line">     * @param  uri 路由地址</div><div class="line">     * @return false 不存在 true 存在</div><div class="line">     */</div><div class="line">    public boolean checkOperatorForURI(String uri)&#123;</div><div class="line">        if (!TextUtils.isEmpty(uri))&#123;</div><div class="line">            IOperator&lt;?, ?&gt; operator = getOperator(uri);</div><div class="line">            if (operator == null)&#123;</div><div class="line">                throw new NotFoundRuleException(uri);</div><div class="line">            &#125;</div><div class="line">            return true;</div><div class="line">        &#125;else &#123;</div><div class="line">            throw new NotFountRemotePathException();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean checkOpratorForProtocol(String protocol)&#123;</div><div class="line">        return mOperatorPool != null &amp;&amp; mOperatorPool.keySet().contains(protocol);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 根据Uri获取路由操作类</div><div class="line">     * @param uri 路由地址</div><div class="line">     */</div><div class="line">    public  &lt;T,V&gt; IOperator&lt;T,V&gt; getOperator(String uri)&#123;</div><div class="line">        IOperator&lt;T,V&gt; operator = null;</div><div class="line">        if (mOperatorPool != null)&#123;</div><div class="line">            Set&lt;String&gt; protocols = mOperatorPool.keySet();</div><div class="line">            for (String protocol :</div><div class="line">                    protocols) &#123;</div><div class="line">                if (uri.startsWith(protocol))&#123;</div><div class="line">                    operator = mOperatorPool.get(protocol);</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return operator;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public &lt;T&gt; RemoteOperatorManager putRemoteUri(String uri, Class&lt;T&gt; clazz) &#123;</div><div class="line">        if (checkOperatorForURI(uri))&#123;</div><div class="line">            IOperator&lt;T, ?&gt; operator = getOperator(uri);</div><div class="line">            operator.put(uri,clazz);</div><div class="line">        &#125;</div><div class="line">        return mRemoteManager;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="（五）代言者——Remote编写"><a href="#（五）代言者——Remote编写" class="headerlink" title="（五）代言者——Remote编写"></a>（五）代言者——Remote编写</h6><p>为什么是代言者，是因为其实每一个具体方法都是由Manager去完成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">public class Remote &#123;</div><div class="line"></div><div class="line">    private final static String PATTERN = &quot;&quot;;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 添加自定义路由操作</div><div class="line">     * @param protocol 路由协议</div><div class="line">     * @param operator 路由操作类</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public static RemoteOperatorManager putCoustomOprator(String protocol, IOperator operator)&#123;</div><div class="line">        return RemoteOperatorManager.get().putCustomOperator(protocol,operator);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 添加路由地址</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public static&lt;T&gt; RemoteOperatorManager putRemoteUri(String uri,Class&lt;T&gt; clazz)&#123;</div><div class="line">        return RemoteOperatorManager.get().putRemoteUri(uri,clazz);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 启用路由地址</div><div class="line">     * @param ctx Context</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public static &lt;V&gt; V invoke(Context ctx, String uri)&#123;</div><div class="line">        if (checkUri(uri))&#123;</div><div class="line">            IOperator&lt;?, V&gt; operator = RemoteOperatorManager.get().getOperator(uri);</div><div class="line">            return operator.invoke(ctx,uri);</div><div class="line">        &#125;else &#123;</div><div class="line">            throw new NotFoundRuleException(uri);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 路由地址检查</div><div class="line">     * @param uri 路由地址</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public static boolean checkUri(String uri)&#123;</div><div class="line">        return RemoteOperatorManager.get().checkOperatorForURI(uri);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h6 id="（六）测试"><a href="#（六）测试" class="headerlink" title="（六）测试"></a>（六）测试</h6><ul>
+<li><p>在Application中添加、注册路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class RemoteApp extends Application &#123;</div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        super.onCreate();</div><div class="line">        initRemote();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initRemote() &#123;</div><div class="line">        Remote.putRemoteUri(ActivityIntentOperator.PROTOCOL+ IRemoteUrlConfig.LOGIN_REMOTE_URL, LoginActivity.class);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在MainActivity中调用，并执行跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent invoke = Remote.invoke(MainActivity.this, ActivityIntentOperator.PROTOCOL + IRemoteUrlConfig.LOGIN_REMOTE_URL);</div><div class="line"> startActivity(invoke);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>　　至此，我们已经完成了一个路由框架，已经可以解决多Module之间，页面跳转问题。</p>
+<hr>
+<hr>
+<hr>
+<h4 id="（三）拔高与提升"><a href="#（三）拔高与提升" class="headerlink" title="（三）拔高与提升"></a>（三）拔高与提升</h4><p>　　如果已经消化完上面内容，那么就可以再跟随我们做一些拔高与提升了。<br>　　下面我们将会使整个框架提升到通过注解Annotation的形式，来完成所有的工作，达到简化使用的目的。</p>
+<h5 id="１、创建RemoteAnnotation-Module"><a href="#１、创建RemoteAnnotation-Module" class="headerlink" title="１、创建RemoteAnnotation Module"></a>１、创建RemoteAnnotation Module</h5><ul>
+<li>创建注解@Module——指明当前页面所在Module<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Target(ElementType.TYPE)</div><div class="line">@Retention(RetentionPolicy.CLASS)</div><div class="line">public @interface Module &#123;</div><div class="line">    String value()default &quot;&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>创建注解@Modules——指明当前有多少个Module<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Target(ElementType.TYPE)</div><div class="line">@Retention(RetentionPolicy.CLASS)</div><div class="line">public @interface Modules &#123;</div><div class="line">    String[]value();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="2、创建RemoteCompiler-Module"><a href="#2、创建RemoteCompiler-Module" class="headerlink" title="2、创建RemoteCompiler Module"></a>2、创建RemoteCompiler Module</h5><ul>
+<li>创建配置文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Config &#123;</div><div class="line">    public static final String PACKAGE_NAME = &quot;com.mmyz.router&quot;;</div><div class="line">    public static final String PAGE_PREFIX = &quot;Module_&quot;;</div><div class="line">    public static final String CLASS_NAME = &quot;AutoRegisterRemote&quot;;</div><div class="line">    public static final String METHOD_NAME = &quot;autoRegister&quot;;</div><div class="line">    public static final String PAGE_METHOD_NAME = &quot;autoInvoke&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>创建RemoteProcessor——注解处理类<br>对此处不太了解的可以移步到 <a href="http://hannesdorfmann.com/annotation-processing/annotationprocessing101" target="_blank" rel="external">http://hannesdorfmann.com/annotation-processing/annotationprocessing101</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div></pre></td><td class="code"><pre><div class="line">@AutoService(Processor.class)</div><div class="line">public class RemoteProcessor extends AbstractProcessor &#123;</div><div class="line"></div><div class="line">    private Filer mFiler;</div><div class="line">    private Messager mMessager;</div><div class="line"></div><div class="line">    private List&lt;String&gt; mStaticRemoteUriList = new ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public synchronized void init(ProcessingEnvironment processingEnvironment) &#123;</div><div class="line">        super.init(processingEnvironment);</div><div class="line">        //文件操作</div><div class="line">        mFiler = processingEnvironment.getFiler();</div><div class="line">        //消息输出</div><div class="line">        mMessager = processingEnvironment.getMessager();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 当前java 源码版本</div><div class="line">     * java compiler version</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public SourceVersion getSupportedSourceVersion() &#123;</div><div class="line">        return SourceVersion.latest();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 指明需要关心的注解</div><div class="line">     * need handle Annotation type</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public Set&lt;String&gt; getSupportedAnnotationTypes() &#123;</div><div class="line">        Set&lt;String&gt; types = new HashSet&lt;&gt;();</div><div class="line">        types.add(Modules.class.getCanonicalName());</div><div class="line">        types.add(Module.class.getCanonicalName());</div><div class="line">        types.add(StaticRemote.class.getCanonicalName());</div><div class="line">        return types;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 具体处理</div><div class="line">     * @param set</div><div class="line">     * @param re</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment re) &#123;</div><div class="line">        //清除URL维护集合</div><div class="line">        mStaticRemoteUriList.clear();</div><div class="line">        try &#123;</div><div class="line">            Set&lt;? extends Element&gt; modules = re.getElementsAnnotatedWith(Modules.class);</div><div class="line">            if (modules != null &amp;&amp; !modules.isEmpty())&#123;</div><div class="line">                patchModulesClass(modules);</div><div class="line">                return true;</div><div class="line">            &#125;</div><div class="line">            processModule(re);</div><div class="line"></div><div class="line">        &#125;catch (Exception e)&#123;</div><div class="line">            mMessager.printMessage(Diagnostic.Kind.NOTE,e.getMessage());</div><div class="line">        &#125;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    private void processModule(RoundEnvironment re) &#123;</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            Set&lt;? extends Element&gt; staticElementSet = re.getElementsAnnotatedWith(StaticRemote.class);</div><div class="line">            if (staticElementSet != null &amp;&amp; !staticElementSet.isEmpty()) &#123;</div><div class="line">                for (Element e :</div><div class="line">                        staticElementSet) &#123;</div><div class="line">                    if (!(e instanceof TypeElement)) &#123;</div><div class="line">                        continue;</div><div class="line">                    &#125;</div><div class="line">                    TypeElement te = (TypeElement) e;</div><div class="line">                    mStaticRemoteUriList.add(te.getAnnotation(StaticRemote.class).value());</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Set&lt;? extends Element&gt; module = re.getElementsAnnotatedWith(Module.class);</div><div class="line"></div><div class="line">            patchModuleClass(module);</div><div class="line">        &#125;catch (Exception e) &#123;</div><div class="line">            mMessager.printMessage(Diagnostic.Kind.NOTE,e.getMessage());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 创建class文件</div><div class="line">     * create class</div><div class="line">     *</div><div class="line">     *  package com.mmyz.router;</div><div class="line">     *</div><div class="line">     *  public class Page_Login()&#123;</div><div class="line">     *      public static autoInvoke()&#123;</div><div class="line">     *          Remote.putRemoteUriDefaultPattern(&quot;activity://com.mmyz.account.LoginActivity&quot;);</div><div class="line">     *      &#125;</div><div class="line">     *  &#125;</div><div class="line">     *</div><div class="line">     */</div><div class="line">    private void patchModuleClass(Set&lt;? extends Element&gt; module) &#123;</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            if (module == null || module.isEmpty())</div><div class="line">                return;</div><div class="line"></div><div class="line">            mMessager.printMessage(Diagnostic.Kind.NOTE,module.toString());</div><div class="line">            Element next = module.iterator().next();</div><div class="line">            Module annotation = next.getAnnotation(Module.class);</div><div class="line"></div><div class="line">            String pageName = annotation.value();</div><div class="line">            String className = Config.PAGE_PREFIX+pageName;</div><div class="line"></div><div class="line">            JavaFileObject file = mFiler.createSourceFile(className, next);</div><div class="line"></div><div class="line">            PrintWriter printWriter = new PrintWriter(file.openWriter());</div><div class="line">            printWriter.println(&quot;package &quot;+ Config.PACKAGE_NAME +&quot;;&quot;);</div><div class="line">            printWriter.println(&quot;import &quot;+ Config.PACKAGE_NAME+&quot;.Remote;&quot;);</div><div class="line">            printWriter.println(&quot;import &quot;+ Config.PACKAGE_NAME+&quot;.exception.NotFoundClassException;&quot;);</div><div class="line">            printWriter.println(&quot;public class &quot;+className +&quot; &#123;&quot;);</div><div class="line">            printWriter.println(&quot;public static void &quot;+ Config.PAGE_METHOD_NAME+&quot;()&#123;&quot;);</div><div class="line"></div><div class="line">            printWriter.println(&quot;try&#123;&quot;);</div><div class="line">            for (String uri :</div><div class="line">                    mStaticRemoteUriList) &#123;</div><div class="line">                printWriter.println(&quot;Remote.putRemoteUriDefaultPattern(\&quot;&quot;+uri+&quot;\&quot;);&quot;);</div><div class="line">            &#125;</div><div class="line">            printWriter.println(&quot;&#125;catch(NotFoundClassException e)&#123;&quot;);</div><div class="line">            printWriter.println(&quot;e.printStackTrace();&quot;);</div><div class="line">            printWriter.println(&quot;&#125;&quot;);</div><div class="line">            printWriter.println(&quot;&#125;&quot;);</div><div class="line">            printWriter.println(&quot;&#125;&quot;);</div><div class="line">            printWriter.flush();</div><div class="line">            printWriter.close();</div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 创建class文件</div><div class="line">     * Create class</div><div class="line">     *</div><div class="line">     *    package com.mmyz.remote;</div><div class="line">     *    public class AutoRegisterRemote&#123;</div><div class="line">     *        public void autoRegister()&#123;</div><div class="line">     *            Page_Login.autoInvoke();</div><div class="line">     *        &#125;</div><div class="line">     *    &#125;</div><div class="line">     */</div><div class="line">    private void patchModulesClass(Set&lt;? extends Element&gt; modules) &#123;</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            TypeElement moduleTypeElement= (TypeElement) modules.iterator().next();</div><div class="line">            JavaFileObject file = mFiler.createSourceFile(Config.CLASS_NAME, moduleTypeElement);</div><div class="line">            PrintWriter writer = new PrintWriter(file.openWriter());</div><div class="line">            writer.println(&quot;package &quot;+ Config.PACKAGE_NAME+&quot;;&quot;);</div><div class="line">            writer.println(&quot;public class &quot;+ Config.CLASS_NAME +&quot; &#123;&quot;);</div><div class="line">            writer.println(&quot;public static void &quot;+ Config.METHOD_NAME +&quot; () &#123;&quot;);</div><div class="line">            Modules modulesAnnotation = moduleTypeElement.getAnnotation(Modules.class);</div><div class="line">            String[] value = modulesAnnotation.value();</div><div class="line"></div><div class="line">            for (String item :</div><div class="line">                    value) &#123;</div><div class="line">                writer.println(Config.PACKAGE_NAME+&quot;.&quot;+ Config.PAGE_PREFIX+item+&quot;.&quot;+ Config.PAGE_METHOD_NAME +&quot;();&quot;);</div><div class="line">            &#125;</div><div class="line">            writer.println(&quot;&#125;&quot;);</div><div class="line">            writer.println(&quot;&#125;&quot;);</div><div class="line">            writer.flush();</div><div class="line">            writer.close();</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            mMessager.printMessage(Diagnostic.Kind.ERROR,e.getMessage());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建反射调用类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class RemoteRegister &#123;</div><div class="line">    public static void register()&#123;</div><div class="line">        try &#123;</div><div class="line">            Class&lt;?&gt; clazz = Class.forName(Config.PACKAGE_NAME + &quot;.&quot; + Config.CLASS_NAME);</div><div class="line">            Method method = clazz.getDeclaredMethod(Config.METHOD_NAME);</div><div class="line">            method.invoke(null);</div><div class="line">        &#125; catch (ClassNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (NoSuchMethodException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (InvocationTargetException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (IllegalAccessException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>改进Remote类——添加两个自动处理方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 根据默认规则自动解析Uri</div><div class="line"> * @param uri 路由地址 Ac</div><div class="line"> */</div><div class="line">public static RemoteOperatorManager putRemoteUriDefaultPattern(String uri) throws NotFoundClassException &#123;</div><div class="line">    // (activity://com.mmyz.account.LoginActivity)</div><div class="line">    Pattern pattern = Pattern.compile(&quot;[/]+&quot;);</div><div class="line">    String[] infos = pattern.split(uri);</div><div class="line">    String protocol = infos[0];</div><div class="line">    String page = infos[1];</div><div class="line">    try &#123;</div><div class="line">        putRemoteUri(uri,Class.forName(page));</div><div class="line">    &#125; catch (ClassNotFoundException e) &#123;</div><div class="line">        throw new NotFoundClassException(page, uri);</div><div class="line">    &#125;</div><div class="line">    return RemoteOperatorManager.get();</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Activity路由跳转</div><div class="line"> * @param context Context</div><div class="line"> * @param uri 路由地址</div><div class="line"> * @param invokeCallback  调用回调，处理Intent传值</div><div class="line"> */</div><div class="line">public static void startActivity(Context context,String uri,BaseInvokeCallback&lt;Intent&gt; invokeCallback)&#123;</div><div class="line">    Intent intent = invoke(context, uri);</div><div class="line">    intent = invokeCallback.invokeCallback(intent);</div><div class="line">    if (intent != null)&#123;</div><div class="line">        context.startActivity(intent);</div><div class="line">    &#125;else &#123;</div><div class="line">        throw new NotFoundIntentException();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="3、具体调用"><a href="#3、具体调用" class="headerlink" title="3、具体调用"></a>3、具体调用</h5><ul>
+<li><p>将两个Module编译到每个模块中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//remoteannotation</div><div class="line">compile project(&apos;:remoteannotation&apos;)</div><div class="line">//remote</div><div class="line">compile project(&apos;:remote&apos;)</div><div class="line">//compiler</div><div class="line">compile project(&apos;:remotecompiler&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>在App模块的Application中调用注册</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">@Modules(&#123;</div><div class="line">          RemoteModuleConfig.ACCOUNT_MODULE,</div><div class="line">          RemoteModuleConfig.PRODUCT_MODULE,</div><div class="line">          RemoteModuleConfig.ORDER_MODULE&#125;)</div><div class="line">public class RemoteApp extends Application &#123;</div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        super.onCreate();</div><div class="line">        initRemote();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initRemote() &#123;</div><div class="line">//        Remote.putRemoteUri(ActivityIntentOperator.PROTOCOL+ IRemoteUrlConfig.LOGIN_REMOTE_URL, LoginActivity.class);</div><div class="line">        RemoteRegister.register();</div><div class="line">//        try &#123;</div><div class="line">//            Remote.putRemoteUriDefaultPattern(ActivityIntentOperator.PROTOCOL+ LoginActivity.REMOTE_URL);</div><div class="line">//        &#125; catch (NotFoundClassException e) &#123;</div><div class="line">//            Log.e(&quot;=========&quot;,e.getMessage());</div><div class="line">//            e.printStackTrace();</div><div class="line">//        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在被需要的页面添加@Module和@StaticRemote注解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Module(RemoteModuleConfig.ACCOUNT_MODULE)</div><div class="line">@StaticRemote(ActivityIntentOperator.PROTOCOL+ RemoteUrlConfig.REGISTER_REMOTE_URL)</div><div class="line">public class RegisterActivity extends AppCompatActivity &#123;</div></pre></td></tr></table></figure>
+</li>
+<li><p>调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">btnProduct.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">    @Override</div><div class="line">    public void onClick(View v) &#123;</div><div class="line">        Remote.startActivity(</div><div class="line">                MainActivity.this,</div><div class="line">                ActivityIntentOperator.PROTOCOL + RemoteUrlConfig.PRODUCT_REMOTE_URL,</div><div class="line">                new BaseInvokeCallback&lt;Intent&gt;());</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h4 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h4><p>　　通过多Module的划分，可以很好解决多人协作开发中代码冲突问题。另外通过路由方式是也可以很好的解决在采用多Module划分后，页面之间的跳转问题，同时让页面跳转逻辑更加清晰。所以相对来说本人还是比较推崇，因为无论是<strong>解耦程度</strong>，<strong>可扩展性</strong>，<strong>可维护性</strong>都得到了极大的<strong>提升</strong>。使用和学习成本都不高。当然目前这个是Demo项目用于讲解，如果真的想开发实际项目还需进一步完善，或者去搜集大手写的路由框架</p>
+<h4 id="实际代码请下载或者Frok项目。"><a href="#实际代码请下载或者Frok项目。" class="headerlink" title="实际代码请下载或者Frok项目。"></a>实际代码请下载或者Frok项目。</h4><h4 id="项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo-1"><a href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo-1" class="headerlink" title="项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo"></a><a href="https://github.com/ms-liu/AndroidRemoteDemo" target="_blank" rel="external">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</a></h4><h4 id="欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。"><a href="#欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。" class="headerlink" title="欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。"></a>欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。</h4><h4 id="个人邮箱：ms-liu163-163-com"><a href="#个人邮箱：ms-liu163-163-com" class="headerlink" title="个人邮箱：ms_liu163@163.com"></a>个人邮箱：ms_liu163@163.com</h4>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Android/">Android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/框架/">框架</a><a href="/tags/提升开发效率/">提升开发效率</a><a href="/tags/Router/">Router</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/04/17/MultipleModule/" data-title="带你打造一个多Module路由框架 | Refuse To Accept Mediocrity" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/04/28/RetrofitSource/" title="认真看完这一篇，不懂Retrofit？不存在的">
+  <strong>上一篇：</strong><br/>
+  <span>
+  认真看完这一篇，不懂Retrofit？不存在的</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/10/DiffrentMvpFrame/"  title="带你写一个不一样的MVP开发框架">
+ <strong>下一篇：</strong><br/> 
+ <span>带你写一个不一样的MVP开发框架
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+
+
+
+
+
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo"><span class="toc-number">1.</span> <span class="toc-text">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#一、项目为什么要分成多Module"><span class="toc-number">2.</span> <span class="toc-text">一、项目为什么要分成多Module</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、解决Module之间页面跳转问题"><span class="toc-number">3.</span> <span class="toc-text">二、解决Module之间页面跳转问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1、问题分析"><span class="toc-number">3.1.</span> <span class="toc-text">1、问题分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2、问题解决"><span class="toc-number">3.2.</span> <span class="toc-text">2、问题解决</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3、具体代码编写"><span class="toc-number">3.3.</span> <span class="toc-text">3、具体代码编写</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#（一）定义操作接口"><span class="toc-number">3.3.1.</span> <span class="toc-text">（一）定义操作接口</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（二）基础实现类"><span class="toc-number">3.3.2.</span> <span class="toc-text">（二）基础实现类</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（三）具体Activity这种处理"><span class="toc-number">3.3.3.</span> <span class="toc-text">（三）具体Activity这种处理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（四）Manager管理者编写"><span class="toc-number">3.3.4.</span> <span class="toc-text">（四）Manager管理者编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（五）代言者——Remote编写"><span class="toc-number">3.3.5.</span> <span class="toc-text">（五）代言者——Remote编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#（六）测试"><span class="toc-number">3.3.6.</span> <span class="toc-text">（六）测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（三）拔高与提升"><span class="toc-number">4.</span> <span class="toc-text">（三）拔高与提升</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#１、创建RemoteAnnotation-Module"><span class="toc-number">4.1.</span> <span class="toc-text">１、创建RemoteAnnotation Module</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2、创建RemoteCompiler-Module"><span class="toc-number">4.2.</span> <span class="toc-text">2、创建RemoteCompiler Module</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3、具体调用"><span class="toc-number">4.3.</span> <span class="toc-text">3、具体调用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#四、总结"><span class="toc-number">5.</span> <span class="toc-text">四、总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实际代码请下载或者Frok项目。"><span class="toc-number">6.</span> <span class="toc-text">实际代码请下载或者Frok项目。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#项目GitHub地址：https-github-com-ms-liu-AndroidRemoteDemo-1"><span class="toc-number">7.</span> <span class="toc-text">项目GitHub地址：https://github.com/ms-liu/AndroidRemoteDemo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。"><span class="toc-number">8.</span> <span class="toc-text">欢迎大家给出中肯的建议和提高意见，你的鼓励将是我最大的动力。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#个人邮箱：ms-liu163-163-com"><span class="toc-number">9.</span> <span class="toc-text">个人邮箱：ms_liu163@163.com</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/框架/" title="框架">框架<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/提升开发效率/" title="提升开发效率">提升开发效率<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MVP/" title="MVP">MVP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Router/" title="Router">Router<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/源码解析/" title="源码解析">源码解析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络请求/" title="网络请求">网络请求<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.jianshu.com/u/9b306936e423" target="_blank" title="简书">简书</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://github.com/ms-liu" target="_blank" title="GayHub">GayHub</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A man is not old as long as he is seeking something. A man is not old until regrets take the place of dreams. —— J. Barrymore <br/><br/>
+			享受那些烦恼，感受想要的味道</p>
+	</section>
+
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">M-Liu</a> 
+		© 2017 
+		
+		<a href="/about" target="_blank" title="M-Liu">M-Liu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<script>
+var option = {
+  engineKey: '4ac092ad8d749fdc6293'
+};
+(function(w,d,t,u,n,s,e){
+  s = d.createElement(t);
+  s.src = u;
+  s.async = 1;
+  w[n] = function(r){
+    w[n].opts = r;
+  };
+  e = d.getElementsByTagName(t)[0];
+  e.parentNode.insertBefore(s, e);
+})(window,document,'script','//tinysou-cdn.b0.upaiyun.com/ts.js','_ts');
+_ts(option);
+</script>
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
