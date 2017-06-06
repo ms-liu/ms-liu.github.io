@@ -302,5 +302,11 @@
       <content type="html"></content>
     </entry>
     
+    <entry>
+      <title><![CDATA[search]]></title>
+      <url>/search/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
   
 </search>
