@@ -205,11 +205,11 @@
         
         <tags>
             
-            <tag> Router </tag>
+            <tag> 框架 </tag>
             
             <tag> 提升开发效率 </tag>
             
-            <tag> 框架 </tag>
+            <tag> Router </tag>
             
         </tags>
         
@@ -283,11 +283,11 @@
         
         <tags>
             
-            <tag> 提升开发效率 </tag>
+            <tag> MVP </tag>
             
             <tag> 框架 </tag>
             
-            <tag> MVP </tag>
+            <tag> 提升开发效率 </tag>
             
         </tags>
         
@@ -299,12 +299,6 @@
     <entry>
       <title><![CDATA[about]]></title>
       <url>/about/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[search]]></title>
-      <url>/search/index.html</url>
       <content type="html"></content>
     </entry>
     
